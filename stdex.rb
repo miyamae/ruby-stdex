@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# 標準ライブラリに対する拡張 2.0.0 (2010/12/29)
-#
-# (C) 2010 BitArts, Inc.
-# Author: Tatsuya Miyamae <miyamae@bitarts.co.jp>
-#
 
 class Object
   # サブクラスの配列を返す
@@ -78,7 +72,7 @@ class Object
   def to_html_p
     "<p>" +
     to_s.gsub("\r\n", "\n").
-    to_s.gsub("\r", "\n").
+    gsub("\r", "\n").
     gsub("&", "&amp;").
     gsub("<", "&lt;").
     gsub(">", "&gt;").
@@ -91,11 +85,21 @@ class Object
   def to_p
     "<p>" +
     to_s.gsub("\r\n", "\n").
-    to_s.gsub("\r", "\n").
+    gsub("\r", "\n").
     gsub("  ", " &nbsp;").
     gsub(/\n{2,}/, "</p><p>").
     gsub(/\n+$/m, "").
     gsub(/\n/, "<br />") + "</p>"
+  end
+  # 文字列中のURLを自動リンク
+  def link_url(options={})
+    require 'uri'
+    target = options[:target] || ''
+    r = self
+    URI.extract(to_s).each do |url|
+      r = to_s.gsub(url, %|<a href="#{url}" target="#{target}">#{url}</a>|)
+    end
+    r
   end
   # HTML→plain変換
   def to_plain
