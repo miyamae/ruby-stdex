@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+require "kconv"
+
 class Object
   # サブクラスの配列を返す
   def self.subclasses
@@ -47,7 +49,6 @@ class Object
   end
   # 配列下のすべての文字列をUTF-8に変換
   def all_toutf8!
-    require "kconv"
     if is_a?(Array)
       each { |v| v.all_toutf8! }
     elsif is_a?(Hash)
@@ -206,8 +207,8 @@ class Date
   # 年齢計算
   def age(calcDay = Time.now)
     age = calcDay.year - self.year
-    return age -1 if calcDay.month < self.month
-    return age -1 if calcDay.month == self.month && calcDay.day < self.day
+    return age - 1 if calcDay.month < self.month
+    return age - 1 if calcDay.month == self.month && calcDay.day < self.day
     return age
   end
 end
